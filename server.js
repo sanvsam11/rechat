@@ -9,7 +9,8 @@ const io = new Server(server)
 
 io.on('connection', (socket)=>{
     console.log('a user connected')
-    socket.on('chat message', (msg)=>{
+    io.on('send message', (msg)=>{
+        console.log('got:'+msg)
         io.emit('chat message', msg )
     })
     socket.on('disconnect',()=>{
@@ -20,11 +21,14 @@ io.on('connection', (socket)=>{
 
 app.use(express.static(path.join(__dirname, 'build')))
 
-app.get('/ping', function(req, res){
+app.get('/ping', function(req, res){ 
     return res.send('pong')
 })
 
-app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+// app.get('/', function(req, res){
+//     res.sendFile(path.join(__dirname, 'src', 'index.js'))
+// })
+
+server.listen(process.env.PORT || 8080, ()=>{
+    console.log('server listening on 8080')
 })
-server.listen(process.env.PORT || 8080)
