@@ -1,27 +1,58 @@
 import './App.css';
-import React, { useState, useRef } from 'react';
-import Messages from './modules/Messages'
-import socketClient from "socket.io-client"
+import React, {Component} from 'react'
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from "react-router-dom"
+import Home from './pages/Home'
+import Chat from './pages/Chat'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
+import {auth} from './services/firebase'
+import PublicRoute from './PublicRoute'
+import PrivateRoute from './PrivateRoute'
 
-function App() {
-  const socket = socketClient("http://127.0.0.1:8080")
-  const [messages, setMessages] = useState([])
-  const inputRef = useRef(null)
-  const handleSend = () => {
-    const msg = inputRef.current.value
-    socket.emit('send message', msg)
+class App extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      authenticated: false,
+      loading: true
+    }
   }
-  socket.on('chat message', (msg)=>{
-    setMessages(oldmessages=>[...oldmessages, msg])
-  })
-  return(
-    <div>
-        <Messages Messages={messages} /> 
-        <form id="form" onSubmit={()=>handleSend()}>
-            <input id="input" autoComplete="off" ref={inputRef} /><button>Send</button>
-        </form>
-    </div>
-  )
+  componentDidMount(){
+    auth().onAuthStateChanged((user)=>{
+      if(user){
+        this.setState({
+          authenticated: true,
+          loading: false
+        })
+      }
+      else{
+        this.setState({
+          authenticated: false,
+          loading: false
+        })
+      }
+    })
+  }
+  render(){
+    return this.state.loading===true?<h2>Loading...</h2>:(
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home}></Route>
+          <PrivateRoute path="/chat" authenticated={this.state.authenticated}
+            component={chat}></PrivateRoute>
+          <PublicRoute path="/signup" authenticated={this.state.authenticated}
+            component={signup}></PublicRoute>
+          <PublicRoute path="/login" authenticated={this.state.authenticated}
+            component={login}></PublicRoute>
+        </Switch>
+      </Router>
+    )
+  }
 }
 
 export default App;
