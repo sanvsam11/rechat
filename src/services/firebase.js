@@ -1,4 +1,6 @@
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
 const firebaseConfig = {
     apiKey: "AIzaSyCy1yn--OW9jSpmV-12PdU6Pvm_dwYfsno",
     authDomain: "santchat-b88bd.firebaseapp.com",

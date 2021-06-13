@@ -7,7 +7,7 @@ import {
   Redirect,
 } from "react-router-dom"
 import Home from './pages/Home'
-import Chat from './pages/Chat'
+import Chat from './pages/chat'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import {auth} from './services/firebase'
@@ -44,11 +44,11 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={Home}></Route>
           <PrivateRoute path="/chat" authenticated={this.state.authenticated}
-            component={chat}></PrivateRoute>
+            component={Chat}></PrivateRoute>
           <PublicRoute path="/signup" authenticated={this.state.authenticated}
-            component={signup}></PublicRoute>
+            component={Signup}></PublicRoute>
           <PublicRoute path="/login" authenticated={this.state.authenticated}
-            component={login}></PublicRoute>
+            component={Login}></PublicRoute>
         </Switch>
       </Router>
     )

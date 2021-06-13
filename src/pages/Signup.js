@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import {signup} from '../helper/auth'
+import {signup} from '../helpers/auth'
 import {signin, signInWithGoogle, signInWithGitHub} from "../helpers/auth"
 
 export default class Signup extends React.Component{
@@ -21,7 +21,7 @@ export default class Signup extends React.Component{
             [event.target.name]: event.target.value
         })
     }
-    handleSubmit(event){
+    async handleSubmit(event){
         event.preventDefault()
         this.setState({error: ''})
         try{
@@ -45,7 +45,8 @@ export default class Signup extends React.Component{
       }
     }
     render(){
-        <div>
+        return(
+          <div>
         <form onSubmit={this.handleSubmit}>
           <h1>
             Sign Up to
@@ -73,5 +74,6 @@ export default class Signup extends React.Component{
           <p>Already have an account? <Link to="/login">Login</Link></p>
         </form>
       </div>
+        )
     }
 }

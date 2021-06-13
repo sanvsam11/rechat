@@ -1,4 +1,9 @@
-
+import {
+    Route,
+    BrowserRouter as Router,
+    Switch,
+    Redirect,
+  } from "react-router-dom"
 export default function PrivateRoute({component: Component, authenticated, ...rest}){
     return(
         <Route
