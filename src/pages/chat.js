@@ -1,5 +1,14 @@
 import React, {Component} from 'react'
 import {auth, db} from '../services/firebase'
+import Paper from '@material-ui/core/Paper'
+import Card from '@material-ui/core/Card'
+import Button from '@material-ui/core/Button'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 export default class Chat extends React.Component{
     constructor(props){
@@ -48,19 +57,41 @@ export default class Chat extends React.Component{
     }
     render(){
         return(
-            <div>
-                <div className='chats'>
-                    {this.state.chats.map(chat=><p key={chat.timestamp}>{chat.content}</p>)}
-                </div>
-                <form onSubmit={this.handleSubmit}>
-                    <input onChange={this.handleChange} value={this.state.content}></input>
+            <Grid container 
+                direction="column"
+                justify="flex-start"
+                alignItems="flex-start" 
+            >
+                <Grid item
+                direction="column"
+                justify="flex-start"
+                alignItems="flex-start"
+                className='scroll  height80'>
+                <Paper variant='outlined' elevation={2} className='chats'>
+                    {this.state.chats.map(chat=>
+                         <Card variant='outlined' key={chat.timestamp} elevation={3}>
+                             <CardContent>
+                             <Typography color="textSecondary" gutterBottom>
+                                 {this.state.user.displayName}
+                                 </Typography>
+                                 <Typography variant="body2" component="p">
+                                 {chat.content}</Typography>
+                             </CardContent>
+                     </Card>
+                    )}
+                </Paper>
+                </Grid>
+               <Grid item>
+               <form onSubmit={this.handleSubmit}>
+                    <TextField variant='outlined' onChange={this.handleChange} value={this.state.content}></TextField>
                     {this.state.error? <p>{this.state.writeError}</p>:null}
-                    <button type='submit'>Send</button>
+                    <Button type='submit'>Send</Button>
                 </form>
-                <div>
-                    Login as: <strong>{this.state.user.email}</strong>
-                </div>
-            </div>
+                <Paper elevation = {1}>
+                    Logged in as: <strong>{this.state.user.email}</strong>
+                </Paper>
+               </Grid>
+            </Grid>
         )
     }
 }
